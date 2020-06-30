@@ -162,7 +162,7 @@ export default {
     setData(dato, img) {
       axios
         .get(
-          "http://190.121.135.158/coronaenco/webservice/getName.php?cedula=" +
+          "https://190.121.135.158/coronaenco/webservice/getName.php?cedula=" +
             dato[3]
         )
         .then(response => {
