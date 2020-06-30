@@ -72,7 +72,7 @@ import axios from "axios";
 export default {
   data() {
     return {
-      sortBy: 'date',
+      sortBy: "date",
       sortDesc: true,
       loading: true,
       items: [],
@@ -126,7 +126,7 @@ export default {
   mounted() {
     this.getData();
     this.totalRows = this.items.length;
-    this.filter = " "
+    this.filter = " ";
   },
 
   methods: {
@@ -148,11 +148,11 @@ export default {
       this.items = [];
       this.loading = true;
       console.log("Getting data of " + this.folder);
-      axios.get(this.url).then(response => {
+      return axios.get(this.url).then(response => {
         this.loading = false;
         let registros = response.data.split(".jpg/");
         registros.map(registro => {
-          let dato = registro.split("_");          
+          let dato = registro.split("_");
           if (dato.length != 1) {
             this.setData(dato, registro);
           }
@@ -160,7 +160,7 @@ export default {
       });
     },
     setData(dato, img) {
-      axios
+      return axios
         .get(
           "https://190.121.135.158/coronaenco/webservice/getName.php?cedula=" +
             dato[3]
