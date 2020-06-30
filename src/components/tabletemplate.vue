@@ -148,16 +148,21 @@ export default {
       this.items = [];
       this.loading = true;
       console.log("Getting data of " + this.folder);
-      return axios.get(this.url).then(response => {
-        this.loading = false;
-        let registros = response.data.split(".jpg/");
-        registros.map(registro => {
-          let dato = registro.split("_");
-          if (dato.length != 1) {
-            this.setData(dato, registro);
-          }
+      return axios
+        .get(this.url)
+        .then(response => {
+          this.loading = false;
+          let registros = response.data.split(".jpg/");
+          registros.map(registro => {
+            let dato = registro.split("_");
+            if (dato.length != 1) {
+              this.setData(dato, registro);
+            }
+          });
+        })
+        .catch(error => {
+          console.log(error);
         });
-      });
     },
     setData(dato, img) {
       return axios
@@ -178,6 +183,9 @@ export default {
             name: response.data,
             img: this.folder + img + ".jpg"
           });
+        })
+        .catch(error => {
+          console.log(error);
         });
     }
   }
