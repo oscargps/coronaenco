@@ -11,7 +11,7 @@ export default {
         return{
             registros: [],
             url:"https://coronaenco.000webhostapp.com/coronaenco/webservice/getLavado.php?folder=DesinfecPuesto",
-            folder:"https://coronaenco.000webhostapp.com/coronaenco/Desinfecpuesto/"
+            folder:"https://coronaenco.000webhostapp.com/coronaenco/DesinfecPuesto/"
         }
     },
     components:{
