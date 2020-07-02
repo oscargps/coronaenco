@@ -10,8 +10,8 @@ export default {
     data(){
         return{
             registros: [],
-            url:"https://190.121.135.158/coronaenco/webservice/getLavado.php?folder=CoronApp",
-            folder:"https://190.121.135.158/coronaenco/CoronApp/"
+            url:"https://coronaenco.000webhostapp.com/coronaenco/webservice/getLavado.php?folder=CoronApp",
+            folder:"https://coronaenco.000webhostapp.com/coronaenco/CoronApp/"
         }
     },
     components:{

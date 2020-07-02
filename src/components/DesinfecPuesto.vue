@@ -10,8 +10,8 @@ export default {
     data(){
         return{
             registros: [],
-            url:"https://190.121.135.158/coronaenco/webservice/getLavado.php?folder=DesinfecPuesto",
-            folder:"https://190.121.135.158/coronaenco/Desinfecpuesto/"
+            url:"https://coronaenco.000webhostapp.com/coronaenco/webservice/getLavado.php?folder=DesinfecPuesto",
+            folder:"https://coronaenco.000webhostapp.com/coronaenco/Desinfecpuesto/"
         }
     },
     components:{
