@@ -12,7 +12,6 @@
           </b-input-group>
         </b-form-group>
       </b-col>
-
       <b-col md="4" class>
         <b-form-group label-cols-sm="3" label="Mostrar" class="mb-1">
           <b-form-select v-model="perPage" :options="pageOptions"></b-form-select>
@@ -22,6 +21,7 @@
         <b-button variant="primary" v-on:click="getData()">Actualizar</b-button>
       </b-col>
     </b-row>
+
     <hr />
     <div v-if="loading">
       <h2>Cargando....</h2>
@@ -41,7 +41,7 @@
       v-else
     >
       <template v-slot:cell(actions)="row">
-        <b-button size="sm" @click="info(row.item, row.index, $event.target)" class="mr-1">Ver Foto</b-button>
+        <b-button size="sm" @click="info(row.item, row.index, $event.target)" class="mr-1">Evidencia</b-button>
       </template>
       <template v-slot:row-details="row">
         <b-card>
@@ -72,21 +72,26 @@ import axios from "axios";
 export default {
   data() {
     return {
-      sortBy: "date",
+      sortBy: "fecha",
       sortDesc: true,
       loading: true,
       items: [],
       fields: [
         {
-          key: "date",
+          key: "fecha",
           label: "Fecha",
           sortable: true,
           sortDirection: "desc"
         },
-
         {
-          key: "name",
+          key: "nombre",
           label: "Nombre",
+          sortable: true,
+          sortDirection: "desc"
+        },
+        {
+          key: "proceso",
+          label: "Proceso",
           sortable: true,
           sortDirection: "desc"
         },
@@ -126,13 +131,15 @@ export default {
   mounted() {
     this.getData();
     this.totalRows = this.items.length;
-    this.filter = " ";
+    
   },
 
   methods: {
     info(item, index, button) {
+      console.log(item.img);
+      
       this.infoModal.title = item.name;
-      this.infoModal.content = item.img;
+      this.infoModal.content = this.folder + item.img;
       this.$root.$emit("bv::show::modal", this.infoModal.id, button);
     },
     resetInfoModal() {
@@ -145,26 +152,24 @@ export default {
       this.currentPage = 1;
     },
     getData() {
-      this.items = [];
       this.loading = true;
-      console.log("Getting data of " + this.folder);
+      console.log("Getting data of " + this.url);
       return axios
         .get(this.url)
-        .then(response => {
-          this.loading = false;
-          let registros = response.data.split(".jpg/");
-          registros.map(registro => {
-            let dato = registro.split("_");
-            if (dato.length != 1) {
-              this.setData(dato, registro);
-            }
-          });
+        .then((response) => {
+          this.items=response.data 
+          this.loading = false 
+          this.filter = " ";
+          this.filter = null                 
         })
         .catch(error => {
           console.log(error);
         });
     },
     setData(dato, img) {
+      function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min)) + min;
+      }
       return axios
         .get(
           "https://coronaenco.000webhostapp.com/coronaenco/webservice/getName.php?cedula=" +
@@ -175,12 +180,16 @@ export default {
           let year = dateString.substring(0, 4);
           let month = dateString.substring(4, 6);
           let day = dateString.substring(6, 8);
+          let num = getRandomInt(0, 5);
+          let procesos = ["LCF", "PQR", "SCR", "ADMON", "MTTO", "OMOV"];
+          console.log(num);
 
           // var date = new Date(year, month - 1, day);
           // var currentDate = new Date();
           this.items.push({
             date: year + "/" + month + "/" + day,
             name: response.data,
+            proceso: procesos[num],
             img: this.folder + img + ".jpg"
           });
         })

@@ -10,8 +10,8 @@ export default {
     data(){
         return{
             registros: [],
-            url:"https://coronaenco.000webhostapp.com/coronaenco/webservice/getLavado.php?folder=LavadoManos",
-            folder:"https://coronaenco.000webhostapp.com/coronaenco/LavadoManos/"
+            url:"https://coronaenco.000webhostapp.com/coronaenco/webservice/getInfo.php?tipo_reporte=LD",
+            folder:"https://coronaenco.000webhostapp.com/coronaenco/LavadoManos/old/"
         }
     },
     components:{
