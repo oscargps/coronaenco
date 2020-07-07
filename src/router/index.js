@@ -4,7 +4,7 @@ import LavadoManos from '@/components/LavadoManos'
 import desinfecpuesto from '@/components/DesinfecPuesto'
 import coronapp from '@/components/CoronApp'
 import Home from '@/components/Home'
-// import tabletest from '@/components/tabletest'
+import Reportes from '@/components/Reportes'
 
 Vue.use(Router)
 
@@ -31,11 +31,11 @@ export default new Router({
       name: 'coronapp',
       component: coronapp
     },
-    // {
-    //   path: '/table',
-    //   name: 'tabletest',
-    //   component: tabletest
-    // },
+    {
+      path: '/reportes',
+      name: 'Reportes',
+      component: Reportes
+    }
     // {
     //   path: '/newpermiso',
     //   name: 'newpermiso',
