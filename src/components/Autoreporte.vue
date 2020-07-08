@@ -39,7 +39,7 @@ export default {
       ],
       registros: [],
       url:
-        "http://coronaenco.000webhostapp.com/coronaenco/webservice/getAutoreporte.php",
+        "https://coronaenco.000webhostapp.com/coronaenco/webservice/getAutoreporte.php",
       folder: "https://coronaenco.000webhostapp.com/coronaenco/LavadoManos/old/"
     };
   },
