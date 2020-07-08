@@ -1,6 +1,6 @@
 <template>
   <div>
-    <tabletemplate v-bind:data="registros" v-bind:url="url" v-bind:folder="folder" :fields="fields" />
+    <tabletemplate v-bind:data="registros" v-bind:url="url" v-bind:folder="folder" :fields="fields" :reporte=true />
   </div>
 </template>
 <script>
@@ -28,13 +28,19 @@ export default {
           sortable: true,
           sortDirection: "desc"
         },
+        {
+          key: "temperatura",
+          label: "Temperatura",
+          sortable: true,
+          sortDirection: "desc"
+        },
 
         { key: "actions", label: "" }
       ],
       registros: [],
       url:
-        "https://coronaenco.000webhostapp.com/coronaenco/webservice/getInfo.php?tipo_reporte=CA",
-      folder: "https://coronaenco.000webhostapp.com/coronaenco/CoronApp/old/"
+        "http://coronaenco.000webhostapp.com/coronaenco/webservice/getAutoreporte.php",
+      folder: "https://coronaenco.000webhostapp.com/coronaenco/LavadoManos/old/"
     };
   },
   components: {

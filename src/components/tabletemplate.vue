@@ -38,10 +38,21 @@
       :per-page="perPage"
       :filter="filter"
       @filtered="onFiltered"
+      :tbody-tr-class="rowClass"
       v-else
     >
       <template v-slot:cell(actions)="row">
-        <b-button size="sm" @click="info(row.item, row.index, $event.target)" class="mr-1">Evidencia</b-button>
+        <b-button
+          size="sm"
+          @click="infoTable(row.item, row.index, $event.target)"
+          v-if="reporte"
+        >{{ row.detailsShowing ? 'Cerrar' : 'Ver' }} Detalle</b-button>
+        <b-button
+          size="sm"
+          v-else
+          @click="info(row.item, row.index, $event.target)"
+          class="mr-1"
+        >Evidencia</b-button>
       </template>
       <template v-slot:row-details="row">
         <b-card>
@@ -52,7 +63,10 @@
       </template>
     </b-table>
     <b-modal :id="infoModal.id" :title="infoModal.title" ok-only @hide="resetInfoModal">
-      <img class="evidencia" v-bind:src="infoModal.content" />
+      <div v-if="reporte">
+        <b-table stacked :items="this.infoModal.content" ></b-table>
+      </div>
+      <img v-else class="evidencia" v-bind:src="infoModal.content" />
     </b-modal>
     <b-row>
       <b-col md="6" class="my-1">
@@ -76,28 +90,6 @@ export default {
       sortDesc: true,
       loading: true,
       items: [],
-      fields: [
-        {
-          key: "fecha",
-          label: "Fecha",
-          sortable: true,
-          sortDirection: "desc"
-        },
-        {
-          key: "nombre",
-          label: "Nombre",
-          sortable: true,
-          sortDirection: "desc"
-        },
-        {
-          key: "proceso",
-          label: "Proceso",
-          sortable: true,
-          sortDirection: "desc"
-        },
-
-        { key: "actions", label: "" }
-      ],
       totalRows: 1,
       currentPage: 1,
       perPage: 10,
@@ -106,14 +98,17 @@ export default {
       infoModal: {
         id: "info-modal",
         title: "",
-        content: ""
+        content: [],
+        items: []
       }
     };
   },
   props: {
     data: Array,
     url: String,
-    folder: String
+    folder: String,
+    fields: Array,
+    reporte: Boolean
   },
   computed: {
     sortOptions() {
@@ -131,20 +126,49 @@ export default {
   mounted() {
     this.getData();
     this.totalRows = this.items.length;
-    
+    console.log(this.fields);
   },
 
   methods: {
+    rowClass(item, type) {
+      if (!item || type !== "row") return;
+      if (item.temperatura > 37) return "table-danger";
+    },
+    infoTable(item, index, button) {
+      this.infoModal.title = item.nombre;
+      this.infoModal.content = [item.sintomas]
+      // // let sintomas = Object.keys(item.sintomas);
+      // this.infoModal.content.forEach(sintoma => {
+      //   if (item.sintomas[sintoma]) {
+      //     this.infoModal.items.push("Positivo");
+      //   } else {
+      //     this.infoModal.items.push("Negativo");
+      //   }
+      // });
+      // sintomas.map(sintoma => {
+      //   counter++;
+      //   if (item.sintomas[sintoma]) {
+      //     this.infoModal.items.push("Positivo");
+      //   } else {
+      //     this.infoModal.items.push("Negativo");
+      //   }
+      // });
+      // console.log(this.infoModal.items);
+
+      // this.infoModal.content = sintomas;
+      this.$root.$emit("bv::show::modal", this.infoModal.id, button);
+    },
     info(item, index, button) {
       console.log(item.img);
-      
+
       this.infoModal.title = item.name;
       this.infoModal.content = this.folder + item.img;
       this.$root.$emit("bv::show::modal", this.infoModal.id, button);
     },
     resetInfoModal() {
       this.infoModal.title = "";
-      this.infoModal.content = "";
+      this.infoModal.content = [];
+      this.infoModal.items = [];
     },
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
@@ -156,11 +180,11 @@ export default {
       console.log("Getting data of " + this.url);
       return axios
         .get(this.url)
-        .then((response) => {
-          this.items=response.data 
-          this.loading = false 
+        .then(response => {
+          this.items = response.data;
+          this.loading = false;
           this.filter = " ";
-          this.filter = null                 
+          this.filter = null;
         })
         .catch(error => {
           console.log(error);

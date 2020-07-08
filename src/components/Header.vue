@@ -17,6 +17,9 @@
             <router-link to="/desinfecpuesto" class="nav-link">Desinfeccion de puesto</router-link>
           </b-nav-item>
           <b-nav-item >
+            <router-link to="/autoreporte" class="nav-link">Reporte de Sintomas</router-link>
+          </b-nav-item>
+          <b-nav-item >
             <router-link to="/reportes" class="nav-link">Reportes</router-link>
           </b-nav-item>
         </b-navbar-nav>

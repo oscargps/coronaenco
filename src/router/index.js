@@ -5,6 +5,7 @@ import desinfecpuesto from '@/components/DesinfecPuesto'
 import coronapp from '@/components/CoronApp'
 import Home from '@/components/Home'
 import Reportes from '@/components/Reportes'
+import AutoReporte from '@/components/Autoreporte'
 
 Vue.use(Router)
 
@@ -35,12 +36,12 @@ export default new Router({
       path: '/reportes',
       name: 'Reportes',
       component: Reportes
-    }
-    // {
-    //   path: '/newpermiso',
-    //   name: 'newpermiso',
-    //   component: newpermiso
-    // },
+    },
+    {
+      path: '/autoreporte',
+      name: 'AutoReporte',
+      component: AutoReporte
+    },
     // {
     //   path: '/permisos',
     //   name: 'permisos',
