@@ -1,6 +1,15 @@
 <template>
   <div>
-    <tabletemplate v-bind:data="registros" v-bind:url="url" v-bind:folder="folder" :fields="fields" :reporte=true />
+    <tabletemplate
+      v-bind:data="registros"
+      v-bind:url="url"
+      v-bind:folder="folder"
+      :fields="fields"
+      :reporte="true"
+      :clickGenerar="generarExcel"
+      :Fexcel="fieldsExcel"
+      TitleExcel = "Autoreporte de sintomas"
+    />
   </div>
 </template>
 <script>
@@ -37,6 +46,22 @@ export default {
 
         { key: "actions", label: "" }
       ],
+      fieldsExcel:{
+        Cedula:'id',
+        Nombre:'nombre',
+        Proceso:'proceso',
+        'Fecha de reporte':'fecha',
+        Temperatura: 'temperatura',
+        Fiebre: 'sintomas.Fiebre',
+        Tos: 'sintomas.Tos',
+        'Dolor de cabeza': 'sintomas.Dolor de cabeza',
+        'Dolor de garganta': 'sintomas.Dolor de garganta',
+        'Pérdida del olfato o gusto': 'sintomas.Pérdida del olfato o gusto',
+        'Malestar general': 'sintomas.Malestar general',
+        'Dificultad respiratoria': 'sintomas.Dificultad respiratoria',
+        'Secreciones nasales': 'sintomas.Secreciones nasales',
+        'Diarrea': 'sintomas.Diarrea',
+      },
       registros: [],
       url:
         "https://coronaenco.000webhostapp.com/coronaenco/webservice/getAutoreporte.php",
@@ -45,6 +70,11 @@ export default {
   },
   components: {
     tabletemplate
+  },
+  methods:{
+    generarExcel(){
+
+    }
   }
 };
 </script>

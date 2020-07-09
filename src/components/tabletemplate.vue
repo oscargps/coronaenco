@@ -17,54 +17,66 @@
           <b-form-select v-model="perPage" :options="pageOptions"></b-form-select>
         </b-form-group>
       </b-col>
-      <b-col md="3">
+      <b-col md="2">
         <b-button variant="primary" v-on:click="getData()">Actualizar</b-button>
+      </b-col>
+      <b-col md="1" v-if="reporte">
+        <b-button variant="success">
+          <download-excel :name="nameExcel" :title="TitleExcel" :fields="Fexcel" :data="items">
+            <font-awesome-icon icon="file-excel" />
+          </download-excel>
+        </b-button>
       </b-col>
     </b-row>
 
     <hr />
+
     <div v-if="loading">
       <h2>Cargando....</h2>
     </div>
-    <!-- Main table element -->
-    <b-table
-      show-empty
-      stacked="md"
-      :sort-by.sync="sortBy"
-      :sort-desc.sync="sortDesc"
-      :items="items"
-      :fields="fields"
-      :current-page="currentPage"
-      :per-page="perPage"
-      :filter="filter"
-      @filtered="onFiltered"
-      :tbody-tr-class="rowClass"
-      v-else
-    >
-      <template v-slot:cell(actions)="row">
-        <b-button
-          size="sm"
-          @click="infoTable(row.item, row.index, $event.target)"
-          v-if="reporte"
-        >{{ row.detailsShowing ? 'Cerrar' : 'Ver' }} Detalle</b-button>
-        <b-button
-          size="sm"
-          v-else
-          @click="info(row.item, row.index, $event.target)"
-          class="mr-1"
-        >Evidencia</b-button>
-      </template>
-      <template v-slot:row-details="row">
-        <b-card>
-          <ul>
-            <li v-for="(value, key) in row.item" :key="key">{{ key }}: {{ value }}</li>
-          </ul>
-        </b-card>
-      </template>
-    </b-table>
+    <div v-else>
+
+      <!-- Main table element -->
+      <b-table
+        show-empty
+        stacked="md"
+        :sort-by.sync="sortBy"
+        :sort-desc.sync="sortDesc"
+        :items="items"
+        :fields="fields"
+        :current-page="currentPage"
+        :per-page="perPage"
+        :filter="filter"
+        @filtered="onFiltered"
+        :tbody-tr-class="rowClass"
+        
+      >
+        <template v-slot:cell(actions)="row">
+          <b-button
+            size="sm"
+            @click="infoTable(row.item, row.index, $event.target)"
+            v-if="reporte"
+          >{{ row.detailsShowing ? 'Cerrar' : 'Ver' }} Detalle</b-button>
+          <b-button
+            size="sm"
+            v-else
+            @click="info(row.item, row.index, $event.target)"
+            class="mr-1"
+          >Evidencia</b-button>
+        </template>
+        <template v-slot:row-details="row">
+          <b-card>
+            <ul>
+              <li v-for="(value, key) in row.item" :key="key">{{ key }}: {{ value }}</li>
+            </ul>
+          </b-card>
+        </template>
+      </b-table>
+    </div>
+
     <b-modal :id="infoModal.id" :title="infoModal.title" ok-only @hide="resetInfoModal">
       <div v-if="reporte">
-        <b-table stacked :items="this.infoModal.content" ></b-table>
+        <b-table stacked :items="this.infoModal.content"></b-table>
       </div>
       <img v-else class="evidencia" v-bind:src="infoModal.content" />
     </b-modal>
@@ -108,7 +120,10 @@ export default {
     url: String,
     folder: String,
     fields: Array,
-    reporte: Boolean
+    reporte: Boolean,
+    Fexcel: Object,
+    TitleExcel: String,
+    clickGenerar: Function
   },
   computed: {
     sortOptions() {
@@ -121,6 +136,9 @@ export default {
             value: f.key
           };
         });
+    },
+    nameExcel() {
+      return this.TitleExcel + ".xls";
     }
   },
   mounted() {
@@ -136,26 +154,7 @@ export default {
     },
     infoTable(item, index, button) {
       this.infoModal.title = item.nombre;
-      this.infoModal.content = [item.sintomas]
-      // // let sintomas = Object.keys(item.sintomas);
-      // this.infoModal.content.forEach(sintoma => {
-      //   if (item.sintomas[sintoma]) {
-      //     this.infoModal.items.push("Positivo");
-      //   } else {
-      //     this.infoModal.items.push("Negativo");
-      //   }
-      // });
-      // sintomas.map(sintoma => {
-      //   counter++;
-      //   if (item.sintomas[sintoma]) {
-      //     this.infoModal.items.push("Positivo");
-      //   } else {
-      //     this.infoModal.items.push("Negativo");
-      //   }
-      // });
-      // console.log(this.infoModal.items);
-
-      // this.infoModal.content = sintomas;
+      this.infoModal.content = [item.sintomas];
       this.$root.$emit("bv::show::modal", this.infoModal.id, button);
     },
     info(item, index, button) {
