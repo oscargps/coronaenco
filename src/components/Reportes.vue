@@ -1,6 +1,6 @@
 <template>
   <b-container fluid>
-    <b-row>
+    <b-row class="options_bar">
       <b-col md="4">
         <b-row>
           <b-col>
@@ -56,30 +56,81 @@
         </b-form-group>
       </b-col>
       <b-col md="2">
-          <b-button variant="primary" block="">Buscar</b-button>
+        <b-button variant="primary" block @click="Buscar()">Buscar</b-button>
       </b-col>
     </b-row>
-    <hr>
+    <hr />
+    <div v-if="buscar">
+      <h3>Realiza una busqueda</h3>
+    </div>
+    <tabletemplate
+      v-bind:data="registros"
+      v-bind:url="url"
+      v-bind:folder="folder"
+      :fields="fields"
+      :excel="true"
+      :clickGenerar="generarExcel"
+      TitleExcel="Reporte Coronaenco"
+      v-else
+    />
   </b-container>
 </template>
 <script>
+import tabletemplate from "../components/tabletemplate";
 import VueCtkDateTimePicker from "vue-ctk-date-time-picker";
 import "vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css";
 export default {
   data() {
     return {
+      buscar: true,
       hoy: "",
+      selected_process: [],
+      selected_report: [],
       FechaInicio: "",
       FechaFin: "",
-      options: ["Lavado de Manos", "Desinfeccion de Puesto", "CoronApp"],
-      procesos:['ADMON','PQR','SCR','LCF','MTTO','OMOV']
+      options: ["LD", "DP", "CA","FE"],
+      procesos: ["ADMINISTRACIÓN", "PQR", "SCR", "LCF", "MTTO", "OMOV"],
+      registros: [],
+      url: "",
+      folder:
+        "https://coronaenco.000webhostapp.com/coronaenco/LavadoManos/old/",
+      fields: [
+        {
+          key: "fecha",
+          label: "Fecha",
+          sortable: true,
+          sortDirection: "desc"
+        },
+        {
+          key: "nombre",
+          label: "Nombre",
+          sortable: true,
+          sortDirection: "desc"
+        },
+        {
+          key: "proceso",
+          label: "Proceso",
+          sortable: true,
+          sortDirection: "desc"
+        },
+        {
+          key: "tipo_reporte",
+          label: "Reporte",
+          sortable: true,
+          sortDirection: "desc"
+        },
+
+      ],
+
     };
   },
   components: {
-    VueCtkDateTimePicker
+    VueCtkDateTimePicker,
+    tabletemplate
   },
   mounted() {
     this.setToday();
+    this.setDate("hoy");
   },
   computed: {
     ayer() {
@@ -119,6 +170,32 @@ export default {
     }
   },
   methods: {
+    Buscar() {
+      this.buscar = true
+      if (
+        this.selected_process &&
+        this.selected_process.length &&
+        this.selected_report &&
+        this.selected_report.length
+      ) {
+        this.url =
+          "https://coronaenco.000webhostapp.com/coronaenco/webservice/getReporte.php?tipo_reporte=" +
+          this.selected_report +
+          "&procesos=" +
+          this.selected_process +
+          "&fecha1=" +
+          this.FechaInicio +
+          " 00:00:00&fecha2=" +
+          this.FechaFin +
+          " 23:59:00";
+          setTimeout(()=>{
+
+            this.buscar = false;
+          },1000)
+      } else {
+        console.log("falta info");
+      }
+    },
     setToday() {
       let date = new Date();
       let day = date.getDate();
@@ -148,12 +225,13 @@ export default {
         default:
           break;
       }
-    }
+    },
+    generarExcel() {}
   }
 };
 </script>
 <style lang="css">
-.options_report{
-    text-align: left;
+.options_report {
+  text-align: left;
 }
 </style>

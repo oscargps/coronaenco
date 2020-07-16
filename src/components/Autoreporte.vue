@@ -6,9 +6,10 @@
       v-bind:folder="folder"
       :fields="fields"
       :reporte="true"
+      :excel="true"
       :clickGenerar="generarExcel"
       :Fexcel="fieldsExcel"
-      TitleExcel = "Autoreporte de sintomas"
+      TitleExcel="Autoreporte de sintomas"
     />
   </div>
 </template>
@@ -46,21 +47,22 @@ export default {
 
         { key: "actions", label: "" }
       ],
-      fieldsExcel:{
-        Cedula:'id',
-        Nombre:'nombre',
-        Proceso:'proceso',
-        'Fecha de reporte':'fecha',
-        Temperatura: 'temperatura',
-        Fiebre: 'sintomas.Fiebre',
-        Tos: 'sintomas.Tos',
-        'Dolor de cabeza': 'sintomas.Dolor de cabeza',
-        'Dolor de garganta': 'sintomas.Dolor de garganta',
-        'Pérdida del olfato o gusto': 'sintomas.Pérdida del olfato o gusto',
-        'Malestar general': 'sintomas.Malestar general',
-        'Dificultad respiratoria': 'sintomas.Dificultad respiratoria',
-        'Secreciones nasales': 'sintomas.Secreciones nasales',
-        'Diarrea': 'sintomas.Diarrea',
+      fieldsExcel: {
+        Fecha: "fecha",
+        Nombre: "nombre",
+        Proceso: "proceso",
+        Cedula: "id",
+        Temperatura: "temperatura",
+        Fiebre: "sintomas.Fiebre",
+        Tos: "sintomas.Tos",
+        "Dolor de cabeza": "sintomas.Dolor de cabeza",
+        "Dolor de garganta": "sintomas.Dolor de garganta",
+        "Pérdida del olfato o gusto": "sintomas.Pérdida del olfato o gusto",
+        "Malestar general": "sintomas.Malestar general",
+        "Dificultad respiratoria": "sintomas.Dificultad respiratoria",
+        "Secreciones nasales": "sintomas.Secreciones nasales",
+        Diarrea: "sintomas.Diarrea",
+        'Contacto con alguien que presente los anteriores sintomas':'sintomas.Contacto con alguien que presente los anteriores sintomas'
       },
       registros: [],
       url:
@@ -71,10 +73,8 @@ export default {
   components: {
     tabletemplate
   },
-  methods:{
-    generarExcel(){
-
-    }
+  methods: {
+    generarExcel() {}
   }
 };
 </script>

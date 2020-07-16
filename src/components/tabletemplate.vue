@@ -20,7 +20,7 @@
       <b-col md="2">
         <b-button variant="primary" v-on:click="getData()">Actualizar</b-button>
       </b-col>
-      <b-col md="1" v-if="reporte">
+      <b-col md="1" v-if="excel">
         <b-button variant="success">
           <download-excel :name="nameExcel" :title="TitleExcel" :fields="Fexcel" :data="items">
             <font-awesome-icon icon="file-excel" />
@@ -123,7 +123,8 @@ export default {
     reporte: Boolean,
     Fexcel: Object,
     TitleExcel: String,
-    clickGenerar: Function
+    clickGenerar: Function,
+    excel: Boolean
   },
   computed: {
     sortOptions() {

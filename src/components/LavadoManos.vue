@@ -1,6 +1,12 @@
 <template>
   <div>
-    <tabletemplate v-bind:data="registros" v-bind:url="url" v-bind:folder="folder" v-bind:fields="fields" :reporte=false />
+    <tabletemplate
+      v-bind:data="registros"
+      v-bind:url="url"
+      v-bind:folder="folder"
+      v-bind:fields="fields"
+      :reporte="false"
+    />
   </div>
 </template>
 <script>
