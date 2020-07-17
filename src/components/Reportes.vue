@@ -69,13 +69,14 @@
       v-bind:folder="folder"
       :fields="fields"
       :excel="true"
-      :clickGenerar="generarExcel"
       TitleExcel="Reporte Coronaenco"
       v-else
     />
   </b-container>
 </template>
 <script>
+import Swal from "sweetalert2";
+
 import tabletemplate from "../components/tabletemplate";
 import VueCtkDateTimePicker from "vue-ctk-date-time-picker";
 import "vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css";
@@ -88,7 +89,7 @@ export default {
       selected_report: [],
       FechaInicio: "",
       FechaFin: "",
-      options: ["LD", "DP", "CA","FE"],
+      options: ["LD", "DP", "CA", "FE"],
       procesos: ["ADMINISTRACIÓN", "PQR", "SCR", "LCF", "MTTO", "OMOV"],
       registros: [],
       url: "",
@@ -118,10 +119,8 @@ export default {
           label: "Reporte",
           sortable: true,
           sortDirection: "desc"
-        },
-
-      ],
-
+        }
+      ]
     };
   },
   components: {
@@ -171,7 +170,7 @@ export default {
   },
   methods: {
     Buscar() {
-      this.buscar = true
+      this.buscar = true;
       if (
         this.selected_process &&
         this.selected_process.length &&
@@ -188,12 +187,17 @@ export default {
           " 00:00:00&fecha2=" +
           this.FechaFin +
           " 23:59:00";
-          setTimeout(()=>{
-
-            this.buscar = false;
-          },1000)
+        setTimeout(() => {
+          this.buscar = false;
+        }, 1000);
       } else {
-        console.log("falta info");
+        Swal.fire({
+          position: "top-end",
+          icon: "warning",
+          title: "Selecciona por lo menos un proceso y un tipo de reporte",
+          showConfirmButton: true
+          // timer: 1500
+        });
       }
     },
     setToday() {
@@ -225,8 +229,7 @@ export default {
         default:
           break;
       }
-    },
-    generarExcel() {}
+    }
   }
 };
 </script>

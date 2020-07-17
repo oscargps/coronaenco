@@ -22,7 +22,14 @@
       </b-col>
       <b-col md="1" v-if="excel">
         <b-button variant="success">
-          <download-excel :name="nameExcel" :title="TitleExcel" :fields="Fexcel" :data="items">
+          <download-excel
+            :before-finish="finishDownload"
+            :before-generate="startDownload"
+            :name="nameExcel"
+            :title="TitleExcel"
+            :fields="Fexcel"
+            :data="items"
+          >
             <font-awesome-icon icon="file-excel" />
           </download-excel>
         </b-button>
@@ -35,7 +42,6 @@
       <h2>Cargando....</h2>
     </div>
     <div v-else>
-
       <!-- Main table element -->
       <b-table
         show-empty
@@ -49,7 +55,6 @@
         :filter="filter"
         @filtered="onFiltered"
         :tbody-tr-class="rowClass"
-        
       >
         <template v-slot:cell(actions)="row">
           <b-button
@@ -94,6 +99,8 @@
 </template>
 
 <script>
+import Swal from "sweetalert2";
+
 import axios from "axios";
 export default {
   data() {
@@ -220,6 +227,17 @@ export default {
         .catch(error => {
           console.log(error);
         });
+    },
+    finishDownload() {
+      Swal.fire({
+        icon: "success",
+        title: "Se ha generado tu reporte!",
+        showConfirmButton: true,
+      });
+    },
+    startDownload(){
+      console.log('Generando el reporte..');
+      
     }
   }
 };

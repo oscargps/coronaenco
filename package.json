@@ -17,6 +17,7 @@
     "bootstrap": "^4.5.0",
     "bootstrap-vue": "^2.15.0",
     "core-js": "^3.6.5",
+    "sweetalert2": "^9.17.0",
     "vue": "^2.6.11",
     "vue-ctk-date-time-picker": "^2.5.0",
     "vue-json-excel": "^0.2.98",
