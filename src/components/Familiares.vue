@@ -5,7 +5,10 @@
       v-bind:url="url"
       v-bind:folder="folder"
       :fields="fields"
-      :familiar = "true"
+      :familiar="true"
+      :excel="true"
+      :Fexcel="fieldsExcel"
+      TitleExcel="Reporte de Familiares"
     />
   </div>
 </template>
@@ -37,6 +40,14 @@ export default {
 
         { key: "actions", label: "" }
       ],
+      fieldsExcel: {
+        Cedula: "cedula",
+        Nombre: "nombre",
+        Proceso: "proceso",
+        "Nombre familiar": "familiar",
+        "Telefono de contacto": "telefono",
+        "Correo electronico": "correo"
+      },
       registros: [],
       url:
         "https://coronaenco.000webhostapp.com/coronaenco/webservice/getFamiliares.php",

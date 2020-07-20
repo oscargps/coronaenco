@@ -156,7 +156,6 @@ export default {
     familiar: Boolean,
     Fexcel: Object,
     TitleExcel: String,
-    clickGenerar: Function,
     excel: Boolean
   },
   computed: {

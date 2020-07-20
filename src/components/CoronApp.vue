@@ -5,7 +5,9 @@
       v-bind:url="url"
       v-bind:folder="folder"
       :fields="fields"
-      
+      :excel="true"
+      :Fexcel="fieldsExcel"
+      TitleExcel="Reporte de CoronApp"
     />
   </div>
 </template>
@@ -37,6 +39,12 @@ export default {
 
         { key: "actions", label: "" }
       ],
+      fieldsExcel: {
+        Fecha: "fecha",
+        Cedula: "cedula",
+        Nombre: "nombre",
+        Proceso: "proceso",
+      },
       registros: [],
       url:
         "https://coronaenco.000webhostapp.com/coronaenco/webservice/getInfo.php?tipo_reporte=CA",

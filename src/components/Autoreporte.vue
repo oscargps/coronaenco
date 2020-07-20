@@ -7,7 +7,6 @@
       :fields="fields"
       :reporte="true"
       :excel="true"
-      :clickGenerar="generarExcel"
       :Fexcel="fieldsExcel"
       TitleExcel="Autoreporte de sintomas"
     />
