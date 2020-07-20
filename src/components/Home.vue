@@ -13,8 +13,8 @@
       @sliding-start="onSlideStart"
       @sliding-end="onSlideEnd"
     >
-      <b-carousel-slide img-src="http://190.121.135.158/coronaenco/webservice/slides/slide1.jpg"></b-carousel-slide>
-      <b-carousel-slide img-src="http://190.121.135.158/coronaenco/webservice/slides/slide2.jpeg"></b-carousel-slide>
+      <b-carousel-slide img-src="https://coronaenco.000webhostapp.com/coronaenco/webservice/slides/slide1.jpg"></b-carousel-slide>
+      <b-carousel-slide img-src="https://coronaenco.000webhostapp.com/coronaenco/webservice/slides/slide2.jpeg"></b-carousel-slide>
       <!-- <b-carousel-slide img-src="http://190.121.135.158/coronaenco/webservice/slides/slide3.jpeg"></b-carousel-slide>
       <b-carousel-slide img-src="http://190.121.135.158/coronaenco/webservice/slides/slide4.jpeg"></b-carousel-slide>
       <b-carousel-slide img-src="http://190.121.135.158/coronaenco/webservice/slides/slide5.jpeg"></b-carousel-slide> -->
