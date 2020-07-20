@@ -44,6 +44,8 @@
     <div v-else>
       <!-- Main table element -->
       <b-table
+        striped
+        hover
         show-empty
         stacked="md"
         :sort-by.sync="sortBy"
@@ -64,16 +66,24 @@
           >{{ row.detailsShowing ? 'Cerrar' : 'Ver' }} Detalle</b-button>
           <b-button
             size="sm"
+            v-else-if="familiar"
+            @click="row.toggleDetails"
+            class="mr-1"
+          >{{ row.detailsShowing ? 'Cerrar' : 'Ver' }} Datos</b-button>
+          <b-button
+            size="sm"
             v-else
             @click="info(row.item, row.index, $event.target)"
             class="mr-1"
           >Evidencia</b-button>
         </template>
         <template v-slot:row-details="row">
-          <b-card>
-            <ul>
-              <li v-for="(value, key) in row.item" :key="key">{{ key }}: {{ value }}</li>
-            </ul>
+          <b-card :title="row.item.familiar">
+            <b-table
+              stacked
+              :fields="[{key: 'telefono',label: 'Telefono'},{key: 'correo',label: 'Correo'}]"
+              :items="[row.item]"
+            ></b-table>
           </b-card>
         </template>
       </b-table>
@@ -83,6 +93,7 @@
       <div v-if="reporte">
         <b-table stacked :items="this.infoModal.content"></b-table>
       </div>
+      <div v-else-if="familiar"></div>
       <img v-else class="evidencia" v-bind:src="infoModal.content" />
     </b-modal>
     <b-row>
@@ -114,6 +125,20 @@ export default {
       perPage: 10,
       pageOptions: [5, 10, 15],
       filter: null,
+      fieldsFamiliares: [
+        {
+          key: "proceso",
+          label: "Proceso",
+          sortable: true,
+          sortDirection: "desc"
+        },
+        {
+          key: "familiar",
+          label: "Familiar",
+          sortable: true,
+          sortDirection: "desc"
+        }
+      ],
       infoModal: {
         id: "info-modal",
         title: "",
@@ -128,6 +153,7 @@ export default {
     folder: String,
     fields: Array,
     reporte: Boolean,
+    familiar: Boolean,
     Fexcel: Object,
     TitleExcel: String,
     clickGenerar: Function,
@@ -152,7 +178,6 @@ export default {
   mounted() {
     this.getData();
     this.totalRows = this.items.length;
-    console.log(this.fields);
   },
 
   methods: {
@@ -165,6 +190,7 @@ export default {
       this.infoModal.content = [item.sintomas];
       this.$root.$emit("bv::show::modal", this.infoModal.id, button);
     },
+
     info(item, index, button) {
       console.log(item.img);
 
@@ -192,6 +218,7 @@ export default {
           this.loading = false;
           this.filter = " ";
           this.filter = null;
+          console.log(this.items);
         })
         .catch(error => {
           console.log(error);
@@ -232,12 +259,11 @@ export default {
       Swal.fire({
         icon: "success",
         title: "Se ha generado tu reporte!",
-        showConfirmButton: true,
+        showConfirmButton: true
       });
     },
-    startDownload(){
-      console.log('Generando el reporte..');
-      
+    startDownload() {
+      console.log("Generando el reporte..");
     }
   }
 };

@@ -20,6 +20,9 @@
             <router-link to="/autoreporte" class="nav-link">Reporte de Sintomas</router-link>
           </b-nav-item>
           <b-nav-item >
+            <router-link to="/familiares" class="nav-link">Familiares</router-link>
+          </b-nav-item>
+          <b-nav-item >
             <router-link to="/reportes" class="nav-link">Reportes</router-link>
           </b-nav-item>
         </b-navbar-nav>

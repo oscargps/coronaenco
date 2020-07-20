@@ -6,6 +6,7 @@ import coronapp from '@/components/CoronApp'
 import Home from '@/components/Home'
 import Reportes from '@/components/Reportes'
 import AutoReporte from '@/components/Autoreporte'
+import Familiares from '@/components/Familiares'
 
 Vue.use(Router)
 
@@ -42,10 +43,10 @@ export default new Router({
       name: 'AutoReporte',
       component: AutoReporte
     },
-    // {
-    //   path: '/permisos',
-    //   name: 'permisos',
-    //   component: permisos
-    // }
+    {
+      path: '/familiares',
+      name: 'Familiares',
+      component: Familiares
+    }
   ]
 })
