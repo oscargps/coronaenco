@@ -9,8 +9,9 @@ Vue.use(BootstrapVue)
 import JsonExcel from 'vue-json-excel'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faFileExcel } from '@fortawesome/free-solid-svg-icons'
+import { faFileExcel, faDownload } from '@fortawesome/free-solid-svg-icons'
 library.add(faFileExcel)
+library.add(faDownload)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.component('downloadExcel', JsonExcel)
 import VueCtkDateTimePicker from 'vue-ctk-date-time-picker';

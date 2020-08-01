@@ -7,7 +7,7 @@
       :fields="fields"
       :excel="true"
       :Fexcel="fieldsExcel"
-      TitleExcel="Reporte de Desinfeccion de pueto de trabajo"
+      TitleExcel="Reporte de Desinfeccion de puesto de trabajo"
     />
   </div>
 </template>

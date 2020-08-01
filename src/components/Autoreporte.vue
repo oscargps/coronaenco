@@ -5,7 +5,7 @@
       v-bind:url="url"
       v-bind:folder="folder"
       :fields="fields"
-      :reporte="true"
+      :Autoreporte="true"
       :excel="true"
       :Fexcel="fieldsExcel"
       TitleExcel="Autoreporte de sintomas"

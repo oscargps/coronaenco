@@ -2,7 +2,7 @@
   <b-container fluid>
     <!-- User Interface controls -->
     <b-row>
-      <b-col md="5" class="my-1">
+      <b-col sm="5" class="my-1">
         <b-form-group label-cols-sm="3" label="Filtrar" class="mb-0">
           <b-input-group>
             <b-form-input v-model="filter" placeholder="Buscar.."></b-form-input>
@@ -12,16 +12,16 @@
           </b-input-group>
         </b-form-group>
       </b-col>
-      <b-col md="4" class>
+      <b-col sm="4" class>
         <b-form-group label-cols-sm="3" label="Mostrar" class="mb-1">
           <b-form-select v-model="perPage" :options="pageOptions"></b-form-select>
         </b-form-group>
       </b-col>
-      <b-col md="2">
-        <b-button variant="primary" v-on:click="getData()">Actualizar</b-button>
+      <b-col sm="1">
+        <b-button variant="primary" class="m-1" v-on:click="getData()">Actualizar</b-button>
       </b-col>
-      <b-col md="1" v-if="excel">
-        <b-button variant="success">
+      <b-col sm="1" v-if="excel">
+        <b-button class="m-1" variant="success">
           <download-excel
             :before-finish="finishDownload"
             :before-generate="startDownload"
@@ -32,6 +32,11 @@
           >
             <font-awesome-icon icon="file-excel" />
           </download-excel>
+        </b-button>
+      </b-col>
+      <b-col sm="1" v-if="reportes">
+        <b-button class="m-1" variant="info" @click="DescargarFotos()">
+          <font-awesome-icon icon="download" />
         </b-button>
       </b-col>
     </b-row>
@@ -61,20 +66,21 @@
         <template v-slot:cell(actions)="row">
           <b-button
             size="sm"
+            class="m-1"
             @click="infoTable(row.item, row.index, $event.target)"
-            v-if="reporte"
+            v-if="Autoreporte"
           >{{ row.detailsShowing ? 'Cerrar' : 'Ver' }} Detalle</b-button>
           <b-button
             size="sm"
             v-else-if="familiar"
             @click="row.toggleDetails"
-            class="mr-1"
+            class="m-1"
           >{{ row.detailsShowing ? 'Cerrar' : 'Ver' }} Datos</b-button>
           <b-button
             size="sm"
             v-else
             @click="info(row.item, row.index, $event.target)"
-            class="mr-1"
+            class="m-1"
           >Evidencia</b-button>
         </template>
         <template v-slot:row-details="row">
@@ -90,7 +96,7 @@
     </div>
 
     <b-modal :id="infoModal.id" :title="infoModal.title" ok-only @hide="resetInfoModal">
-      <div v-if="reporte">
+      <div v-if="Autoreporte">
         <b-table stacked :items="this.infoModal.content"></b-table>
       </div>
       <div v-else-if="familiar"></div>
@@ -119,6 +125,7 @@ export default {
       sortBy: "fecha",
       sortDesc: true,
       loading: true,
+      pics: [],
       items: [],
       totalRows: 1,
       currentPage: 1,
@@ -152,7 +159,8 @@ export default {
     url: String,
     folder: String,
     fields: Array,
-    reporte: Boolean,
+    Autoreporte: Boolean,
+    reportes: Boolean,
     familiar: Boolean,
     Fexcel: Object,
     TitleExcel: String,
@@ -184,6 +192,12 @@ export default {
       if (!item || type !== "row") return;
       if (item.temperatura > 37) return "table-danger";
     },
+    // Sintoma_true(item, type){
+    //   console.log(item.key);
+
+    //   if (!item || type !== "row") return;
+    //   if (item) return "table-danger";
+    // },
     infoTable(item, index, button) {
       this.infoModal.title = item.nombre;
       this.infoModal.content = [item.sintomas];
@@ -191,11 +205,15 @@ export default {
     },
 
     info(item, index, button) {
-      console.log(item.img);
-
-      this.infoModal.title = item.name;
-      this.infoModal.content = this.folder + item.img;
-      this.$root.$emit("bv::show::modal", this.infoModal.id, button);
+      if (this.reportes) {
+        this.infoModal.title = item.name;
+        this.infoModal.content = this.getFolder(item.tipo_reporte) + item.img;
+        this.$root.$emit("bv::show::modal", this.infoModal.id, button);
+      } else {
+        this.infoModal.title = item.name;
+        this.infoModal.content = this.folder + item.img;
+        this.$root.$emit("bv::show::modal", this.infoModal.id, button);
+      }
     },
     resetInfoModal() {
       this.infoModal.title = "";
@@ -209,7 +227,7 @@ export default {
     },
     getData() {
       this.loading = true;
-      console.log("Getting data of " + this.url);
+      // console.log("Getting data of " + this.url);
       return axios
         .get(this.url)
         .then(response => {
@@ -217,38 +235,6 @@ export default {
           this.loading = false;
           this.filter = " ";
           this.filter = null;
-          console.log(this.items);
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    setData(dato, img) {
-      function getRandomInt(min, max) {
-        return Math.floor(Math.random() * (max - min)) + min;
-      }
-      return axios
-        .get(
-          "https://coronaenco.000webhostapp.com/coronaenco/webservice/getName.php?cedula=" +
-            dato[3]
-        )
-        .then(response => {
-          let dateString = dato[0];
-          let year = dateString.substring(0, 4);
-          let month = dateString.substring(4, 6);
-          let day = dateString.substring(6, 8);
-          let num = getRandomInt(0, 5);
-          let procesos = ["LCF", "PQR", "SCR", "ADMON", "MTTO", "OMOV"];
-          console.log(num);
-
-          // var date = new Date(year, month - 1, day);
-          // var currentDate = new Date();
-          this.items.push({
-            date: year + "/" + month + "/" + day,
-            name: response.data,
-            proceso: procesos[num],
-            img: this.folder + img + ".jpg"
-          });
         })
         .catch(error => {
           console.log(error);
@@ -263,6 +249,52 @@ export default {
     },
     startDownload() {
       console.log("Generando el reporte..");
+    },
+    getFolder(tipo_reporte) {
+      let folder;
+      switch (tipo_reporte) {
+        case "LD":
+          folder =
+            "https://coronaenco.000webhostapp.com/coronaenco/LavadoManos/old/";
+          break;
+        case "DP":
+          folder =
+            "https://coronaenco.000webhostapp.com/coronaenco/DesinfecPuesto/old/";
+          break;
+        case "CA":
+          folder =
+            "https://coronaenco.000webhostapp.com/coronaenco/CoronApp/old/";
+          break;
+        case "FE":
+          folder =
+            "https://coronaenco.000webhostapp.com/coronaenco/Encuesta/old/";
+          break;
+        default:
+          break;
+      }
+      return folder;
+    },
+    DescargarFotos() {
+      let pics = [];
+      let formData = new FormData();
+
+      this.items.map(item => {
+        pics.push(item.img);
+      });
+      console.log(pics);
+      
+      formData.append("pics", [pics]);
+
+      axios
+        .post(
+          "https://coronaenco.000webhostapp.com/coronaenco/webservice/crearZip.php",
+          formData
+        )
+        .then(response => {
+          console.log(response);
+          location.href =
+            "https://coronaenco.000webhostapp.com/coronaenco/webservice/coronaenco.zip";
+        });
     }
   }
 };

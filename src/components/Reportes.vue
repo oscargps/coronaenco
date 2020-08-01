@@ -67,6 +67,7 @@
       v-bind:data="registros"
       v-bind:url="url"
       v-bind:folder="folder"
+      :reportes='true'
       :fields="fields"
       :excel="true"
       TitleExcel="Reporte Coronaenco"
@@ -119,7 +120,8 @@ export default {
           label: "Reporte",
           sortable: true,
           sortDirection: "desc"
-        }
+        },
+        { key: "actions", label: "" }
       ]
     };
   },
