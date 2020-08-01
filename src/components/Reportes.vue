@@ -26,7 +26,7 @@
         </b-row>
         <div class="my-1">
           <b-button-group size="sm" class="mx-1">
-            <b-button @click="setDate('ayer')">Ayer</b-button>
+            <b-button :disabled="isFirst" @click="setDate('ayer')">Ayer</b-button>
             <b-button @click="setDate('hoy')">Hoy</b-button>
             <!-- <b-button @click="setDate('last7')" disabled>Ultimos 7 dias</b-button> -->
             <b-button @click="setDate('mes')">Este mes</b-button>
@@ -103,6 +103,7 @@ export default {
     return {
       buscar: true,
       hoy: "",
+      isFirst: false,
       selected_process: [],
       selected_report: [],
       FechaInicio: "",
@@ -224,7 +225,9 @@ export default {
       let day = date.getDate();
       let month = date.getMonth() + 1;
       let year = date.getFullYear();
-
+      if(day == 1){
+        this.isFirst=true
+      }
       if (month < 10) {
         this.hoy = `${year}-0${month}-${day}`;
       } else {
