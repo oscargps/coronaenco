@@ -28,9 +28,9 @@
           <b-button-group size="sm" class="mx-1">
             <b-button @click="setDate('ayer')">Ayer</b-button>
             <b-button @click="setDate('hoy')">Hoy</b-button>
-            <b-button @click="setDate('last7')" disabled>Ultimos 7 dias</b-button>
+            <!-- <b-button @click="setDate('last7')" disabled>Ultimos 7 dias</b-button> -->
             <b-button @click="setDate('mes')">Este mes</b-button>
-            <b-button @click="setDate('all')" disabled>Total</b-button>
+            <!-- <b-button @click="setDate('all')" disabled>Total</b-button> -->
           </b-button-group>
         </div>
       </b-col>
@@ -44,6 +44,23 @@
             stacked
           ></b-form-checkbox-group>
         </b-form-group>
+        <b-button
+          size="sm"
+          id="bt-help"
+          v-b-tooltip.hover
+          title="Conoce las abreviaturas"
+          @click="$bvToast.show('example-toast')"
+        >?</b-button>
+        <b-toast
+          id="example-toast"
+          title="Abreviaturas"
+          static
+          no-auto-hide
+        >LD -> Lavado de LavadoManos <br/>
+        DP -> Desinfeccion de puesto <br/>
+        CA -> Reporte CoronApp <br/>
+        FE -> Firma Encuesta Autoreporte <br/>
+        </b-toast>
       </b-col>
       <b-col md="3" class="options_report">
         <b-form-group>
@@ -67,7 +84,7 @@
       v-bind:data="registros"
       v-bind:url="url"
       v-bind:folder="folder"
-      :reportes='true'
+      :reportes="true"
       :fields="fields"
       :excel="true"
       TitleExcel="Reporte Coronaenco"
@@ -228,6 +245,7 @@ export default {
           this.FechaInicio = this.firstDayOfMonth;
           this.FechaFin = this.hoy;
           break;
+
         default:
           break;
       }
@@ -238,5 +256,11 @@ export default {
 <style lang="css">
 .options_report {
   text-align: left;
+}
+#bt-help {
+  position: absolute;
+  top: 5px;
+  left: 100px;
+  border-radius: 45px;
 }
 </style>
